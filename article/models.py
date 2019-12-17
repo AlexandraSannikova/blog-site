@@ -17,5 +17,5 @@ class Comments(models.Model):
     comments_text = models.TextField()
     
     #создать отношение с Article
-    comments_artice = models.ForeignKey(Article, on_delete=models.PROTECT)
+    comments_article = models.ForeignKey(Article, on_delete=models.PROTECT)
     

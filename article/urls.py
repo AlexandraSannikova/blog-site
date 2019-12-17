@@ -1,6 +1,9 @@
-from django.urls import path
+from django.urls import path, re_path
 from article import views
 
 urlpatterns = [
-    path('3/', views.template_three_simple)
+    # все
+    re_path('^articles/all/$', views.articles),
+    # одна статья. указываем, что будет передаваться параметр article_id и он должен быть цифрой
+    re_path('^articles/get/(?P<article_id>\d+)/$', views.article),
 ]
