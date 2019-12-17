@@ -8,6 +8,7 @@ urlpatterns = [
     re_path('^articles/get/(?P<article_id>\d+)/$', views.article),
     # для изменения лайков
     re_path('^articles/addlike/(?P<article_id>\d+)/$', views.addlike),
+    re_path('^articles/addcomment/(?P<article_id>\d+)/$', views.addcomment),
     # для отображения статей с базовым шаблоном main.html
     re_path('^', views.articles)
 ]

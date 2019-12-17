@@ -3,6 +3,8 @@ from django.shortcuts import render, redirect
 from article.models import Article, Comments
 from django.core.exceptions import ObjectDoesNotExist
 from django.http.response import Http404
+from article.forms import CommentForm
+from django.template.context_processors import csrf
 
 def template_three_simple(request):
     view = "template_three"
@@ -15,10 +17,15 @@ def articles(request):
 
 # отображение одной статьи
 def article(request, article_id=1):
-    # получение конкретной статьи и комментариев для нее
-    return render(request, 'article.html', {'article': Article.objects.get(id=article_id),'comments': Comments.objects.filter(comments_article_id=article_id)})
+    comment_form = CommentForm
+    args = {} # словарь с переменными для шаблона
+    args.update(csrf(request))
+    args['article'] = Article.objects.get(id=article_id)
+    args['comments'] = Comments.objects.filter(comments_article_id=article_id)
+    args['form'] = comment_form
+    return render(request, 'article.html', args)
 
-# Добавление лайков
+    # Добавление лайков
 def addlike(request, article_id):
     try:
         article = Article.objects.get(id=article_id) # находим статью в модели
@@ -28,3 +35,14 @@ def addlike(request, article_id):
     except ObjectDoesNotExist:
         raise Http404 # Ошибка - не сущ-т запрошенная страница
     return redirect('/')
+
+def addcomment(request, article_id):
+    if(request.POST): # если данные в форме post-запроса
+        form = CommentForm(request.POST) # экземпляр класса CommentForm с данными из запроса
+        if form.is_valid(): # тут это особо не надо, тк просто текст
+            # по умолч в ModelForm данные из браузера сразу сохр в БД, но у нас в форме нет comments_article
+            #Но при этом comment становится равным комментарию(выше)
+            comment = form.save(commit=False)
+            comment.comments_article = Article.objects.get(id=article_id)
+            form.save()
+    return redirect('/articles/get/%s/' % article_id) # возврат туда же, где написан коммент

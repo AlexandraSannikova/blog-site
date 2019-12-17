@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 
 class Article(models.Model):
@@ -14,7 +15,7 @@ class Comments(models.Model):
         db_table = "comments"
         
     #текст коммента
-    comments_text = models.TextField()
+    comments_text = models.TextField(verbose_name="Текст комментария")
     
     #создать отношение с Article
     comments_article = models.ForeignKey(Article, on_delete=models.PROTECT)
