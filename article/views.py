@@ -5,6 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http.response import Http404
 from article.forms import CommentForm
 from django.template.context_processors import csrf
+from django.contrib import auth # модуль в админке, для получения username
 
 def template_three_simple(request):
     view = "template_three"
@@ -13,7 +14,7 @@ def template_three_simple(request):
 # отображение всех статей
 def articles(request):
     #'articles.html' - разметка, 'articles' - что подставляем в разметку, берем это из БД
-    return render(request, 'articles.html', {'articles': Article.objects.all()})
+    return render(request, 'articles.html', {'articles': Article.objects.all(), 'username': auth.get_user(request).username})
 
 # отображение одной статьи
 def article(request, article_id=1):
@@ -23,6 +24,7 @@ def article(request, article_id=1):
     args['article'] = Article.objects.get(id=article_id)
     args['comments'] = Comments.objects.filter(comments_article_id=article_id)
     args['form'] = comment_form
+    args['username'] = auth.get_user(request).username
     return render(request, 'article.html', args)
 
     # Добавление лайков
