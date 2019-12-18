@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from datetime import datetime
-from django.contrib.auth.models import User
 
 class Article(models.Model):
     class Meta():
         db_table = "article"
-    
+        ordering = ["-article_date"]
+
     article_title = models.CharField(max_length = 200)
     article_text = models.TextField()
     article_date = models.DateTimeField()

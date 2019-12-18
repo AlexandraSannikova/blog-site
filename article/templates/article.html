@@ -6,9 +6,12 @@
     <p>{{ article.article_text }}</p>
     <hr>
     <div class="large-offset-1 large-8 columns">
-        <p>Comments:</p>
+        <h4>Comments:</h4>
+        <hr>
         {% for comment in comments %}
+            <h5>{{comment.comments_user}} - {{ comment.comments_date }}</h5>
             <p>{{ comment.comments_text }}</p>
+            <hr>
         {% endfor %}
 
         {% if username %}
