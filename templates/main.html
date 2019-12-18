@@ -20,7 +20,11 @@
     </section>
 </div>
 <h1><a href="/">My blog</a></h1>
-{% block article %}{% endblock %}
-{% block login %}{% endblock %}
+<div class="row">
+    <div class="large-offset-1 large-8 columns">
+        {% block article %}{% endblock %}
+        {% block login %}{% endblock %}
+    </div>
+</div>
 </body>
 </html>
