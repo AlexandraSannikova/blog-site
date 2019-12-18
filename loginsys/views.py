@@ -31,7 +31,6 @@ def register(request):
     if(request.POST): # отправлены ли данные из адресной строки или формы регистрации пользователя
         newuser_form = UserCreationForm(request.POST) # тоже новая форма, но с данными из запроса (с username, password1 и 2)
         if newuser_form.is_valid():
-            print('valid')
             newuser_form.save() # т к встроенная форма наследуется от ModellForm, достаточно вызвать save(), чтобы сохр сразу в БД
             # данные username и password из формы, получаем юзера и логинимся
             newuser = auth.authenticate(username=newuser_form.cleaned_data['username'], password=newuser_form.cleaned_data['password2'])

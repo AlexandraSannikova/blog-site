@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
+from datetime import datetime
+from django.contrib.auth.models import User
 
 class Article(models.Model):
     class Meta():
@@ -13,10 +15,14 @@ class Article(models.Model):
 class Comments(models.Model):
     class Meta():
         db_table = "comments"
-        
+
+    comments_date = models.DateTimeField(default=datetime.now())
     #текст коммента
     comments_text = models.TextField(verbose_name="Текст комментария")
     
     #создать отношение с Article
     comments_article = models.ForeignKey(Article, on_delete=models.PROTECT)
+
+    comments_user = models.TextField()
+
     

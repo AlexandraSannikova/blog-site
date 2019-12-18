@@ -6,6 +6,7 @@ from django.http.response import Http404
 from article.forms import CommentForm
 from django.template.context_processors import csrf
 from django.contrib import auth # модуль в админке, для получения username
+from datetime import datetime
 
 def template_three_simple(request):
     view = "template_three"
@@ -23,6 +24,9 @@ def article(request, article_id=1):
     args.update(csrf(request))
     args['article'] = Article.objects.get(id=article_id)
     args['comments'] = Comments.objects.filter(comments_article_id=article_id)
+
+    for i in args['comments']:
+        print(i.comments_date)
     args['form'] = comment_form
     args['username'] = auth.get_user(request).username
     return render(request, 'article.html', args)
@@ -46,5 +50,7 @@ def addcomment(request, article_id):
             #Но при этом comment становится равным комментарию(выше)
             comment = form.save(commit=False)
             comment.comments_article = Article.objects.get(id=article_id)
+            comment.comments_user = auth.get_user(request).username
+            comment.comments_date = datetime.now()
             form.save()
     return redirect('/articles/get/%s/' % article_id) # возврат туда же, где написан коммент
